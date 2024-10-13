@@ -15,8 +15,8 @@ recursos correspondientes, facilitando el acceso a materiales educativos útiles
 2. Links
 
    ```bash
-      - [Evidencia Youtube](https://docs.expo.dev/develop/development-builds/introduction/)
-      - [App EXPO](https://expo.dev/accounts/carlos-cuestas/projects/UltimoDesafioDPS/builds/2a66afd2-e35a-4449-b7ba-49228e02fc3e)
+      - [Evidencia Youtube](https://www.youtube.com/watch?v=_n8nXA6YVUw)
+      - [App EXPO](https://expo.dev/accounts/carlos-cuestas/projects/UltimoDesafioDPS/builds/2995dfca-b0dd-4bb8-9f6d-aea6e4cb22b3)
    ```
 
 No olvidar Ejecutar [`npm install`] en la consola al descargar proyecto.
