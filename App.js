@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Image, ScrollView, Dimensions, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Image, ScrollView, Dimensions, Pressable, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getResources, addResource, updateResource, deleteResource } from './mockapi';
@@ -30,7 +30,7 @@ function LibraryScreen() {
       .toLowerCase(); // Convierte a minúsculas para evitar distinción por mayúsculas
   };
 
-  const filteredResources = resources.filter((item) => 
+  const filteredResources = resources.filter((item) =>
     normalizeText(item.title).includes(normalizeText(searchTitle))
   );
 
@@ -40,7 +40,7 @@ function LibraryScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Biblioteca de Libros</Text>
-      
+
       <Text style={styles.subHeader}>Buscador:</Text>
       <TextInput
         placeholder="Buscar por título"
@@ -48,7 +48,7 @@ function LibraryScreen() {
         value={searchTitle}
         onChangeText={setSearchTitle}
       />
-    
+
       <View style={[styles.gridContainer, { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }]}>
         {filteredResources.map((item) => (
           <TouchableOpacity key={item.id} style={[styles.card, { width: cardWidth }]} onPress={() => openModal(item)}>
@@ -65,10 +65,12 @@ function LibraryScreen() {
             <View style={styles.modalView}>
               <Text style={styles.modalTitle}>{selectedResource.title}</Text>
               <Text style={styles.modalDescription}>{selectedResource.description}</Text>
-              <br/>
-              <a href={selectedResource.source} target="_blank" rel="noopener noreferrer">
-                Ir al recurso
-              </a>
+              <Text />
+
+              <TouchableOpacity onPress={() => Linking.openURL(selectedResource.source)}>
+                <Text style={styles.linkText}>Ir al recurso</Text>
+              </TouchableOpacity>
+
               <Pressable style={styles.closeButton} onPress={closeModal}>
                 <Text style={styles.closeButtonText}>Cerrar</Text>
               </Pressable>
@@ -169,67 +171,65 @@ function CRUDScreen() {
   };
 
   return (
-  <ScrollView contentContainerStyle={styles.container}>
-    <Text style={styles.header}>CRUD de Libros</Text>
-    
-    <View id="1" style={isEditing ? styles.editingMode : null}>
-      <Text style={styles.subHeader}>{editId ? 'Editar Libro' : 'Agregar Nuevo Libro'}</Text>
-      <TextInput placeholder="Título" style={styles.input} value={title} onChangeText={setTitle} />
-      <TextInput placeholder="Descripción" style={styles.input} value={description} onChangeText={setDescription} />
-      <TextInput placeholder="URL de la Imagen" style={styles.input} value={url} onChangeText={setUrl} />
-      <TextInput placeholder="URL del recurso" style={styles.input} value={source} onChangeText={setSource} />
-      
-      {/* Contenedor para los botones */}
-      <View style={{ flexDirection: 'column' }}>
-        <TouchableOpacity
-          style={editId ? styles.updateButton : styles.addButton}
-          onPress={editId ? handleEditResource : handleAddResource}
-        >
-          <Text style={styles.buttonText}>{editId ? 'Actualizar Libro' : 'Agregar Libro'}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>CRUD de Libros</Text>
 
-    <View>
-      <br/>
-    </View>
+      <View id="1" style={isEditing ? styles.editingMode : null}>
+        <Text style={styles.subHeader}>{editId ? 'Editar Libro' : 'Agregar Nuevo Libro'}</Text>
+        <TextInput placeholder="Título" style={styles.input} value={title} onChangeText={setTitle} />
+        <TextInput placeholder="Descripción" style={styles.input} value={description} onChangeText={setDescription} />
+        <TextInput placeholder="URL de la Imagen" style={styles.input} value={url} onChangeText={setUrl} />
+        <TextInput placeholder="URL del recurso" style={styles.input} value={source} onChangeText={setSource} />
 
-    <View style={{ marginVertical: 20 }}>
-    <Text style={styles.subHeader}>Buscador:</Text>
-      <TextInput placeholder="Buscar por título" style={styles.input} value={searchTitle} onChangeText={setSearchTitle} />
-    </View>
-    
-    <Text style={styles.subHeader}>Tabla de Libros</Text>
-    <View style={styles.tableHeader}>
-      <Text style={styles.tableHeaderText}>Título</Text>
-      <Text style={styles.tableHeaderText}>Acciones</Text>
-    </View>
-
-    {paginatedResources.map((item) => (
-      <View key={item.id} style={styles.tableRow}>
-        <Text style={styles.tableText}>{item.title}</Text>
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.editButton} onPress={() => handleSelectResourceForEdit(item)}>
-            <Text style={styles.buttonText}>Editar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteResource(item.id)}>
-            <Text style={styles.buttonText}>Eliminar</Text>
+        {/* Contenedor para los botones */}
+        <View style={{ flexDirection: 'column' }}>
+          <TouchableOpacity
+            style={editId ? styles.updateButton : styles.addButton}
+            onPress={editId ? handleEditResource : handleAddResource}
+          >
+            <Text style={styles.buttonText}>{editId ? 'Actualizar Libro' : 'Agregar Libro'}</Text>
           </TouchableOpacity>
         </View>
       </View>
-    ))}
 
-    <View style={styles.pagination}>
-      <TouchableOpacity style={styles.paginationButton} onPress={handlePreviousPage} disabled={page === 1}>
-        <Text style={styles.buttonText}>Anterior</Text>
-      </TouchableOpacity>
-      <Text>Página {page} de {totalPages}</Text>
-      <TouchableOpacity style={styles.paginationButton} onPress={handleNextPage} disabled={page === totalPages}>
-        <Text style={styles.buttonText}>Siguiente</Text>
-      </TouchableOpacity>
-    </View>
-  </ScrollView>
-);
+      <Text/>
+
+      <View style={{ marginVertical: 20 }}>
+        <Text style={styles.subHeader}>Buscador:</Text>
+        <TextInput placeholder="Buscar por título" style={styles.input} value={searchTitle} onChangeText={setSearchTitle} />
+      </View>
+
+      <Text style={styles.subHeader}>Tabla de Libros</Text>
+      <View style={styles.tableHeader}>
+        <Text style={styles.tableHeaderText}>Título</Text>
+        <Text style={styles.tableHeaderText}>Acciones</Text>
+      </View>
+
+      {paginatedResources.map((item) => (
+        <View key={item.id} style={styles.tableRow}>
+          <Text style={styles.tableText}>{item.title}</Text>
+          <View style={styles.actions}>
+            <TouchableOpacity style={styles.editButton} onPress={() => handleSelectResourceForEdit(item)}>
+              <Text style={styles.buttonText}>Editar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteResource(item.id)}>
+              <Text style={styles.buttonText}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+
+      <View style={styles.pagination}>
+        <TouchableOpacity style={styles.paginationButton} onPress={handlePreviousPage} disabled={page === 1}>
+          <Text style={styles.buttonText}>Anterior</Text>
+        </TouchableOpacity>
+        <Text>Página {page} de {totalPages}</Text>
+        <TouchableOpacity style={styles.paginationButton} onPress={handleNextPage} disabled={page === totalPages}>
+          <Text style={styles.buttonText}>Siguiente</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
 
 }
 
@@ -346,27 +346,28 @@ const styles = StyleSheet.create({
   tableRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderBottomColor: '#ccc',
+    alignItems: 'center',
+    padding: 10,
     borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   tableText: {
-    fontSize: 16,
+    flex: 1,
   },
   actions: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   editButton: {
     backgroundColor: '#fbc02d',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    padding: 5,
     borderRadius: 5,
-    marginRight: 10,
+    marginRight: 5,
   },
   deleteButton: {
     backgroundColor: '#d32f2f',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    padding: 5,
     borderRadius: 5,
   },
   pagination: {
@@ -447,5 +448,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 10,
     marginBottom: 10,
+  },linkText: {
+    color: '#2196F3',
+    textDecorationLine: 'underline',
+    marginVertical: 10,
   },
 });

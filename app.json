@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.carloscuestas.UltimoDesafioDPS"
     },
     "web": {
       "favicon": "./assets/logoico.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8b2b6cab-484f-440f-8115-f6f8afbdc0f1"
+      }
     }
   }
 }
