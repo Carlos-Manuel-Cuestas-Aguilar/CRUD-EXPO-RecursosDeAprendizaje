@@ -20,5 +20,9 @@ recursos correspondientes, facilitando el acceso a materiales educativos útiles
       - App EXPO
          https://expo.dev/accounts/carlos-cuestas/projects/UltimoDesafioDPS/builds/2995dfca-b0dd-4bb8-9f6d-aea6e4cb22b3
    ```
+   Documento:
+   
+   [CA201748 - Desafio 3 - DPS.pdf](https://github.com/user-attachments/files/17352662/CA201748.-.Desafio.3.-.DPS.pdf)
+
 [`mockapi`](https://mockapi.io/)
 No olvidar Ejecutar [`npm install`] en la consola al descargar proyecto.
